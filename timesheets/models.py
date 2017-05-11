@@ -34,6 +34,7 @@ class Project(models.Model):
     name = models.CharField(max_length=255)
     archive = models.BooleanField(default=False)
     estimate = models.DurationField(blank=True, null=True)
+    rate = models.DecimalField(max_digits=6, decimal_places=2, blank=True, null=True)
 
     class Meta:
         default_permissions = ('view', 'add', 'change', 'delete')

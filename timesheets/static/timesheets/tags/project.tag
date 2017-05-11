@@ -1,6 +1,6 @@
 <project>
     <virtual if={ edit }>
-        <div class="col-8">
+        <div class="col-6">
             <input type="text"
                    class="form-control form-control-sm"
                    ref="name"
@@ -12,6 +12,13 @@
                    placeholder="Estimate"
                    ref="estimate"
                    value={ estimate }/>
+        </div>
+        <div class="col-2">
+            <input type="text"
+                   class="form-control form-control-sm"
+                   placeholder="Rate"
+                   ref="rate"
+                   value={ rate }/>
         </div>
         <div class="col-2">
             <button class="btn btn-success btn-sm w-100"

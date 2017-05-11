@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django.contrib.auth.models import User, Permission
 
 from rest_framework import serializers
+from rest_framework.fields import DecimalField
 
 from timesheets.models import Client, Project, Entry
 from timesheets.fields import DurationField
@@ -29,7 +30,7 @@ class ClientProjectSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Project
-        fields = ('id', 'url', 'name', 'client', 'estimate', 'total_entries',
+        fields = ('id', 'url', 'name', 'client', 'estimate', 'rate', 'total_entries',
                   'total_duration', 'percent_done')
 
     def get_queryset(self):
@@ -79,6 +80,7 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     total_duration = serializers.SerializerMethodField()
     percent_done = serializers.SerializerMethodField()
     estimate = DurationField(required=False)
+    rate = DecimalField(max_digits=6, decimal_places=2, required=False)
 
     class Meta:
         model = Project

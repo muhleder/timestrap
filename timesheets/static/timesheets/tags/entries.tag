@@ -31,9 +31,10 @@
                    ref="date"
                    placeholder="Date"/>
         </div>
-        <div class="col-sm-2">
-            <select class="custom-select" ref="project" required>
-                <option><!-- For select2 placeholder to work --></option>
+        <div class="col-sm-2 select-wrapper">
+            <input type="text" class="form-control form-control-sm" name="project_name" ref="project_name" placeholder="Project"/>
+            <select ref="project" required tabindex="-1" hidden>
+                <option></option>
                 <optgroup each={ c in clients } label={ c }>
                     <option each={ projects }
                             value={ url }
@@ -96,8 +97,8 @@
 
     <script>
 
-        timeFromInput(evt) {
-          let value = evt.currentTarget.value;
+        timeFromInput() {
+          let value = this.refs.duration.value;
           let hours = 0;
           let minutes = 0;
           if (isNaN(parseInt(value))) return;
@@ -108,7 +109,7 @@
             hours  = Math.floor(value/60);
           }
           minutes = ("0" + minutes).substr(-2);
-          evt.currentTarget.value = `${hours}:${minutes}`;
+          this.refs.duration.value = `${hours}:${minutes}`;
         }
 
         getEntries(url) {
@@ -144,11 +145,7 @@
                     previous: e[0].previous
                 });
 
-                $('.custom-select').select2({
-                    placeholder: 'Project',
-                    width: '100%',
-                    dropdownAutoWidth: true
-                });
+                this.initProjectInput();
 
                 $('.date-input').pickadate({
                     format: 'yyyy-mm-dd',
@@ -162,6 +159,7 @@
 
         submitEntry(e) {
             e.preventDefault();
+            this.timeFromInput();
             let body = {
                 user: userApiUrl,
                 duration: this.refs.duration.value,
@@ -172,6 +170,10 @@
             quickFetch(entriesApiUrl, 'post', body).then(function(data) {
                 this.refs.duration.value = '';
                 this.refs.note.value = '';
+                this.refs.project.value = '';
+                this.refs.project_name.value = '';
+                $(this.refs.project_name).typeahead('val', '');
+                this.refs.project_name.focus();
                 if (data.id) {
                     data.date = moment(data.date).format('LL');
                     this.entries.unshift(data);
@@ -200,6 +202,39 @@
                    this.perms = perms;
                 });
         }
+
+        initProjectInput() {
+              let project_options = []
+              for (let project of this.projects) {
+                project_options.push({
+                  id:  project.url,
+                  name: `${project.client_details.name}: ${project.name}`
+                })
+              }
+
+              const bloodhound_engine = new Bloodhound({
+                datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                identify: o => o.id,
+                local: project_options
+              });
+
+              const $project_name_input = $('form input[name=project_name]');
+
+              $project_name_input.typeahead(
+                  {hint:true, highlight: true, minLength: 1},
+                  {name: 'project', display: 'name', source: bloodhound_engine});
+
+              const setSelect = (ev, suggestion) => {
+                const $select = $(ev.currentTarget).parents('.select-wrapper').find('select');
+                $select.val(suggestion.id);
+              };
+
+              $project_name_input.bind('typeahead:autocomplete', setSelect);
+              $project_name_input.bind('typeahead:select', setSelect);
+
+              $project_name_input.focus();
+        };
 
 
         this.on('mount', function() {

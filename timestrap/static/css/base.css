@@ -103,6 +103,41 @@ button {
     display: none;
 }
 
+/* Typeahead */
+.tt-menu {
+    min-width: 160px;
+    margin-top: 2px;
+    padding: 5px 0;
+    background-color: #ffffff;
+    border: 1px solid  #666666;
+    *border-right-width: 2px;
+    *border-bottom-width: 2px;
+    box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding;
+    background-clip: padding-box;
+}
+
+.tt-suggestion {
+    display: block;
+    padding: 3px 20px;
+}
+
+.tt-suggestion.tt-is-under-cursor {
+    background-color: #ebc85e;
+}
+
+input[type="text"].tt-hint {
+    color: #dddddd;
+}
+
+.tt-suggestion.tt-is-under-cursor a {
+    color: #ffffff;
+}
+
+.tt-suggestion p {
+    margin: 0;
+}
 
 /* Select2 theme */
 

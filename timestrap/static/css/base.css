@@ -47,12 +47,12 @@ button {
 
 /* Entries */
 
-.inset-row {
+entry-rows .inset-row {
     margin-bottom: -0.75rem;
 }
 
 .inset-row .display-4 {
-    font-size: 2rem;
+    font-size: 1rem;
 }
 
 

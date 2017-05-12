@@ -1,12 +1,6 @@
 <entries>
     <div class="row py-2 mb-4 bg-faded rounded">
         <div class="col-12">
-            <a href="/reports/"
-               class="btn btn-primary btn-sm">
-                <i class="fa fa-book" aria-hidden="true"></i>
-                Create Reports
-            </a>
-
             <pager update={ getEntries }/>
         </div>
     </div>
@@ -58,17 +52,14 @@
         <div class="col-sm-2">
             <input type="text"
                    class="form-control form-control-sm text-right font-weight-bold"
-                   oninput={ timer }
+                   onblur={ timeFromInput }
                    ref="duration"
-                   placeholder="0:00"
-                   value={ timerDuration }
                    required/>
         </div>
         <div class="col-sm-2">
             <button type="submit"
-                    class="btn btn-success btn-sm w-100"
-                    onclick={ timer }>
-                { timerState }
+                    class="btn btn-success btn-sm w-100">
+                Add
             </button>
         </div>
     </form>
@@ -104,41 +95,21 @@
 
 
     <script>
-        tick(entry) {
-            ++entry.totalSeconds;
-            let hours = pad(Math.floor(entry.totalSeconds / 3600));
-            let minutes = pad(Math.floor(entry.totalSeconds % 3600 / 60));
-            let seconds = pad(entry.totalSeconds % 3600 % 60);
-            entry.update({
-                timerDuration: hours + ':' + minutes + ':' + seconds
-            });
+
+        timeFromInput(evt) {
+          let value = evt.currentTarget.value;
+          let hours = 0;
+          let minutes = 0;
+          if (isNaN(parseInt(value))) return;
+          if (value < 10) {
+            hours = value;
+          } else {
+            minutes = value % 60;
+            hours  = Math.floor(value/60);
+          }
+          minutes = ("0" + minutes).substr(-2);
+          evt.currentTarget.value = `${hours}:${minutes}`;
         }
-
-
-        timer(e) {
-            let duration = this.refs.duration.value;
-            if (this.timerState === 'Start' && duration) {
-                this.timerState = 'Add';
-            } else if (this.timerState === 'Start') {
-                this.timerState = 'Stop';
-                this.timerDuration = '00:00:00';
-                this.totalSeconds = 0;
-                interval = setInterval(this.tick, 1000, this);
-                e.preventDefault();
-            } else if (this.timerState === 'Stop') {
-                this.timerState = 'Add';
-                this.totalSeconds = 0;
-                clearInterval(interval);
-                let dur = this.timerDuration;
-                this.timerDuration = dur.substr(0, dur.lastIndexOf(':'));
-                this.totalSeconds = 0;
-                e.preventDefault();
-            } else if (!duration) {
-                this.timerState = 'Start';
-                e.preventDefault();
-            }
-        }
-
 
         getEntries(url) {
             url = (typeof url !== 'undefined') ? url : entriesApiUrl;
@@ -207,7 +178,6 @@
                     if ($.inArray(data.date, this.dates) === -1) {
                         this.dates.unshift(data.date);
                     }
-                    this.timerState = 'Start';
                     this.updateTotals(data.duration, 0);
                 }
             }.bind(this));
@@ -233,7 +203,6 @@
 
 
         this.on('mount', function() {
-            this.timerState = 'Start';
             this.getPerms();
             this.getEntries();
         }.bind(this));

@@ -85,7 +85,7 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Project
         fields = ('id', 'url', 'client', 'client_details', 'name',
-                  'archive', 'estimate', 'total_entries', 'total_duration',
+                  'archive', 'estimate', 'rate', 'total_entries', 'total_duration',
                   'percent_done')
 
     def get_queryset(self):

@@ -81,12 +81,16 @@
 
     <div class="row bg-success text-white py-2 mb-4 rounded">
         <div class="offset-sm-6 col-sm-2 text-right">
+            Today<br>
             Subtotal<br>
-            <strong>Total</strong>
+            <strong>Total</strong><br/>
+            <strong>Billable</strong>
         </div>
         <div class="col-sm-2 text-right">
+            { durationToString(todayDuration) }<br>
             { durationToString(subtotalDuration) }<br>
-            <strong>{ durationToString(totalDuration) }</strong>
+            <strong>{ durationToString(totalDuration) }</strong><br/>
+            <strong>&pound;{ billable }</strong>
         </div>
     </div>
 
@@ -120,8 +124,13 @@
 
             Promise.all([entries, projects]).then(function(e) {
                 let dates = [];
+                let billable = 0;
+                let today_duration = 0;
+                const now = moment();
                 $.each(e[0].results, function(i, entry) {
+                    if (moment(entry.date).isSame(now, 'day')) today_duration += entry.duration;
                     entry.date = moment(entry.date).format('LL');
+                    if (entry.project_details.rate) billable += entry.duration * entry.project_details.rate;
                     if ($.inArray(entry.date, dates) === -1) {
                         dates.push(entry.date);
                     }
@@ -137,8 +146,10 @@
                 this.update({
                     dates: dates,
                     clients: clients,
+                    billable: Math.floor(billable),
                     entries: e[0].results,
                     projects: e[1].results,
+                    todayDuration: today_duration,
                     totalDuration: e[0].total_duration,
                     subtotalDuration: e[0].subtotal_duration,
                     next: e[0].next,

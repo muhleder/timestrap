@@ -105,7 +105,7 @@
           let value = this.refs.duration.value;
           let hours = 0;
           let minutes = 0;
-          if (isNaN(parseInt(value))) return;
+          if (/:/.test(value)) return;
           if (value < 10) {
             hours = value;
           } else {

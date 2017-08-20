@@ -60,8 +60,8 @@ class Project(models.Model):
     client = models.ForeignKey('Client', related_name='projects')
     name = models.CharField(max_length=255)
     archive = models.BooleanField(default=False)
-    estimate = models.DecimalField(max_digits=10, decimal_places=2,
-                                   blank=True, null=True)
+    estimate = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    hourly_rate = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
 
     class Meta:
         default_permissions = ('view', 'add', 'change', 'delete')

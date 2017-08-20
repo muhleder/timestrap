@@ -48,7 +48,7 @@ class ClientProjectSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Project
-        fields = ('id', 'url', 'name', 'client', 'estimate', 'total_entries',
+        fields = ('id', 'url', 'name', 'client', 'estimate', 'hourly_rate', 'total_entries',
                   'total_duration', 'total_cost', 'percent_done', 'archive',)
 
     def get_total_cost(self, obj):
@@ -92,13 +92,11 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     total_entries = serializers.SerializerMethodField()
     total_duration = serializers.SerializerMethodField()
     percent_done = serializers.SerializerMethodField()
-    estimate = DurationField(required=False)
-    rate = DecimalField(max_digits=6, decimal_places=2, required=False)
 
     class Meta:
         model = Project
         fields = ('id', 'url', 'client', 'client_details', 'name',
-                  'archive', 'estimate', 'rate', 'total_entries', 'total_duration',
+                  'archive', 'estimate', 'hourly_rate', 'total_entries', 'total_duration',
                   'percent_done')
 
     def get_queryset(self):

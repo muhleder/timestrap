@@ -2,7 +2,7 @@
 <div class="client">
     <div class="row py-2 bg-faded">
         <template v-if="edit">
-            <div class="col-6">
+            <div class="col-4">
                 <input name="client-name"
                        type="text"
                        class="form-control form-control-sm"
@@ -29,7 +29,7 @@
         </template>
 
         <template v-else>
-            <div v-bind:class="['col-' + [this.$perms.change_task ? '4' : '6'], 'd-flex', 'align-items-center']">
+            <div v-bind:class="['col-' + [this.$perms.change_task ? '2' : '4'], 'd-flex', 'align-items-center']">
                 <span class="font-weight-bold text-uppercase client-name">{{ client.name }}</span>
             </div>
             <div class="col-2 d-flex align-items-center">
@@ -39,6 +39,10 @@
             <div class="col-2 d-flex align-items-center">
                 <i class="fa fa-list text-muted mr-2" aria-hidden="true"></i>
                 Entries
+            </div>
+            <div class="col-2 d-flex align-items-center">
+                <i class="fa fa-list text-muted mr-2" aria-hidden="true"></i>
+                Hourly Rate
             </div>
             <div class="col-2 d-flex align-items-center">
                 <i class="fa fa-percent text-muted mr-2" aria-hidden="true"></i>

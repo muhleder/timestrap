@@ -36,7 +36,7 @@
                        type="text"
                        class="form-control form-control-sm"
                        placeholder="Project Rate"
-                       v-model.number="project_rate" />
+                       v-model.number="project_hourly_rate" />
             </div>
         </div>
     </div>
@@ -69,8 +69,8 @@ export default {
             clients: null,
             client: this.config.project ? this.config.project.client : null,
             project_name: this.config.project ? this.config.project.name : null,
-            project_estimate: this.config.project ? this.config.project.estimate : null
-            project_rate: this.config.project ? this.config.project.rate : null
+            project_estimate: this.config.project ? this.config.project.estimate : null,
+            project_hourly_rate: this.config.project ? this.config.project.hourly_rate : null
         };
     },
     methods: {
@@ -78,7 +78,7 @@ export default {
             let body = {
                 name: this.project_name,
                 estimate: this.project_estimate,
-                rate: this.project_rate,
+                hourly_rate: this.project_hourly_rate,
                 client: this.client
             };
             let url = timestrapConfig.API_URLS.PROJECTS;

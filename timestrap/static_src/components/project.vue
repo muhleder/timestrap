@@ -1,6 +1,6 @@
 <template>
 <div class="project row py-1 bg-faded" v-if="!project.archive">
-    <div v-bind:class="['col-' + [this.$perms.change_project ? '4' : '6'], 'mb-1', 'project-name']">
+    <div v-bind:class="['col-' + [this.$perms.change_project ? '2' : '4'], 'mb-1', 'project-name']">
         {{ project.name }}
     </div>
     <div class="col-2 d-flex align-items-center">
@@ -10,6 +10,10 @@
     <div class="col-2 d-flex align-items-center">
         <i class="fa fa-list text-muted mr-2" aria-hidden="true"></i>
         <span class="mb-1">{{ project.total_entries }}</span>
+    </div>
+    <div class="col-2 d-flex align-items-center">
+        <i class="fa fa-list text-muted mr-2" aria-hidden="true"></i>
+        <span class="mb-1">{{ project.hourly_rate }}</span>
     </div>
     <div class="col-2 d-flex align-items-center" v-if="project.percent_done">
         <div class="progress w-100">

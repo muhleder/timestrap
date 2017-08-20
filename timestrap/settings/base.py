@@ -20,10 +20,10 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'timesheets',
+    'conf',
+    'core',
     'api',
 
-    'compressor',
     'widget_tweaks',
     'django_filters',
     'rest_framework',
@@ -34,7 +34,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'django.contrib.sites',
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -47,6 +51,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'conf.middleware.site.SiteMiddleware',
+    'conf.middleware.i18n.I18NMiddleware',
 ]
 
 ROOT_URLCONF = 'timestrap.urls'
@@ -73,17 +80,21 @@ WSGI_APPLICATION = 'timestrap.wsgi.application'
 # Authentication
 # https://docs.djangoproject.com/en/1.11/topics/auth/default/
 
-LOGIN_REDIRECT_URL = '/'
+AUTHENTICATION_BACKENDS = [
+    'conf.backends.auth.SitePermissionBackend',
+]
+
+LOGIN_REDIRECT_URL = '/timesheet/'
 
 LOGIN_URL = '/login/'
 
-LOGOUT_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/login/'
 
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'en'
 
 TIME_ZONE = 'America/New_York'
 
@@ -94,14 +105,17 @@ USE_L10N = True
 USE_TZ = True
 
 
+# Email settings
+# https://docs.djangoproject.com/en/1.11/topics/email/
+
+EMAIL_BACKEND = 'conf.backends.mail.EmailBackend'
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 STATICFILES_FINDERS = [
-    'compressor.finders.CompressorFinder',
-
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
@@ -114,13 +128,6 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'timestrap/static'),
 ]
 
-COMPRESS_CSS_FILTERS = [
-    'compressor.filters.css_default.CssAbsoluteFilter',
-    'compressor.filters.cssmin.rCSSMinFilter',
-]
-
-COMPRESS_OFFLINE = True
-
 
 # Rest framework
 # http://www.django-rest-framework.org/
@@ -129,9 +136,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'api.permissions.TimestrapDjangoModelPermissions'
     ],
-    'DEFAULT_PAGINATION_CLASS':
-        'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 50,
+    'PAGE_SIZE': 25,
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.DjangoFilterBackend',
     ],

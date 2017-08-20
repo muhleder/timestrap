@@ -1,16 +1,33 @@
 # python
 *.pyc
+/venv
 /.venv
+
+# node
+/node_modules
+
+# environmentals
+/.env
+/.env.json
+/env
+/env.json
 
 # database
 /db.sqlite3
 
-# static files from compressor
+# static files from gulp and testing
+/media
 /static
+/timestrap/static
 
 # documentation builds
-_build
+/docs/_build
 
-# geckodriver
+# geckodriver/selenium
 /geckodriver.log
-/timestrap.iml
+
+# visual studio code project settings
+/.vscode
+
+# code coverage
+/.coverage

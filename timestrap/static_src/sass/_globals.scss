@@ -1,0 +1,6 @@
+// Fix bootstrap v4 not using pointer on some objects
+
+a,
+button {
+    cursor: pointer;
+}

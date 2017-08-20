@@ -30,6 +30,14 @@
                        placeholder="Cost Estimate"
                        v-model.number="project_estimate" />
             </div>
+            <div class="form-group">
+                <label>Rate</label>
+                <input name="project-rate"
+                       type="text"
+                       class="form-control form-control-sm"
+                       placeholder="Project Rate"
+                       v-model.number="project_rate" />
+            </div>
         </div>
     </div>
 
@@ -62,6 +70,7 @@ export default {
             client: this.config.project ? this.config.project.client : null,
             project_name: this.config.project ? this.config.project.name : null,
             project_estimate: this.config.project ? this.config.project.estimate : null
+            project_rate: this.config.project ? this.config.project.rate : null
         };
     },
     methods: {
@@ -69,6 +78,7 @@ export default {
             let body = {
                 name: this.project_name,
                 estimate: this.project_estimate,
+                rate: this.project_rate,
                 client: this.client
             };
             let url = timestrapConfig.API_URLS.PROJECTS;
@@ -82,6 +92,7 @@ export default {
                 this.client = null;
                 this.project_name = null;
                 this.project_estimate = null;
+                this.project_rate = null;
                 this.$emit('close');
             }).catch(error => console.log(error));
         }

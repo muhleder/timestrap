@@ -20,7 +20,7 @@
                    type="text"
                    class="form-control form-control-sm text-right font-weight-bold"
                    ref="duration"
-                   placeholder="0:00"
+                   v-on:onblur="timeFromInput"
                    v-model="duration" />
         </div>
         <div class="col-sm-2" v-if="this.$perms.change_entry">
@@ -124,6 +124,20 @@ export default {
         };
     },
     methods: {
+      timeFromInput(evt) {
+        let value = evt.currentTarget.value;
+        let hours = 0;
+        let minutes = 0;
+        if (isNaN(parseInt(value))) return;
+        if (value < 10) {
+          hours = value;
+        } else {
+          minutes = value % 60;
+          hours  = Math.floor(value/60);
+        }
+        minutes = ("0" + minutes).substr(-2);
+        evt.currentTarget.value = `${hours}:${minutes}`;
+      },
         editEntry() {
             this.$quickFetch(timestrapConfig.API_URLS.CLIENTS).then(data => {
                 this.projects = data.map(function(client) {

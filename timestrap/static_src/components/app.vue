@@ -65,20 +65,6 @@
             </div>
         </div>
     </div>
-    <div class="bg-faded py-2">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-8">
-                    <timer></timer>
-                </div>
-                <div class="col-sm-4 text-right">
-                    <form v-on:submit.prevent v-on:submit="submitSearch">
-                        <input class="form-control form-control-sm" type="text" placeholder="Search by project, client, or entry" v-model="search" />
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="container my-4">
         <router-view v-bind:id="['component-' + $route.name]" class="view"></router-view>
     </div>

@@ -1,17 +1,5 @@
 <template>
 <div class="container">
-    <div class="row py-2 mb-4 bg-faded rounded">
-        <div class="col-12">
-            <router-link to="/reports/" class="btn btn-primary btn-sm">
-                <i class="fa fa-book" aria-hidden="true"></i>
-                Create Reports
-            </router-link>
-            <pager v-bind:next="next"
-                   v-bind:previous="previous"
-                   @next-page="getEntries(next)"
-                   @previous-page="getEntries(previous)"></pager>
-        </div>
-    </div>
 
     <div class="row py-1 bg-inverse text-white font-weight-bold rounded-top">
         <template v-if="advancedMode">
@@ -86,7 +74,7 @@
                    type="text"
                    class="form-control form-control-sm text-right font-weight-bold"
                    v-model="duration"
-                   placeholder="0:00"
+                   v-on:onblur="timeFromInput"
                    required />
         </div>
         <div class="col-sm-2">
@@ -130,6 +118,17 @@
             </div>
         </div>
     </div>
+
+
+    <div class="row py-2 mb-4">
+        <div class="col-12">
+            <pager v-bind:next="next"
+                   v-bind:previous="previous"
+                   @next-page="getEntries(next)"
+                   @previous-page="getEntries(previous)"></pager>
+        </div>
+    </div>
+
 </div>
 </template>
 
@@ -158,6 +157,21 @@ export default {
         };
     },
     methods: {
+      timeFromInput(evt) {
+        console.log('hello')
+        let value = evt.currentTarget.value;
+        let hours = 0;
+        let minutes = 0;
+        if (isNaN(parseInt(value))) return;
+        if (value < 10) {
+          hours = value;
+        } else {
+          minutes = value % 60;
+          hours  = Math.floor(value/60);
+        }
+        minutes = ("0" + minutes).substr(-2);
+        evt.currentTarget.value = `${hours}:${minutes}`;
+      },
         getEntries(url) {
             let userEntries = timestrapConfig.API_URLS.ENTRIES + '?user=' + timestrapConfig.USER.ID;
             url = (typeof url !== 'undefined') ? url : userEntries;

@@ -56,11 +56,12 @@
             <div class="col-sm-6">
             </div>
         </template>
-        <div class="col-sm-3">
-            <select2 id="entry-project"
-                     v-model="project"
-                     v-bind:options="projects"
-                     placeholder="Projects"></select2>
+        <div class="col-sm-3 select-wrapper">
+            <input type="text"
+                   class="form-control form-control-sm"
+                   name="project_name"
+                   ref="project_name"
+                   placeholder="Project"/>
         </div>
         <div class="col-sm-5">
             <input name="entry-note"
@@ -156,22 +157,61 @@ export default {
             advancedMode: false
         };
     },
+    watch: {
+      projects: function(projects) {
+          this.initProjectInput(projects)
+      }
+    },
     methods: {
-      timeFromInput(evt) {
-        console.log('hello')
-        let value = evt.currentTarget.value;
-        let hours = 0;
-        let minutes = 0;
-        if (isNaN(parseInt(value))) return;
-        if (value < 10) {
-          hours = value;
-        } else {
-          minutes = value % 60;
-          hours  = Math.floor(value/60);
-        }
-        minutes = ("0" + minutes).substr(-2);
-        evt.currentTarget.value = `${hours}:${minutes}`;
-      },
+        timeFromInput(evt) {
+            console.log('hello')
+            let value = evt.currentTarget.value;
+            let hours = 0;
+            let minutes = 0;
+            if (isNaN(parseInt(value))) return;
+            if (value < 10) {
+                hours = value;
+            } else {
+                minutes = value % 60;
+                hours  = Math.floor(value/60);
+            }
+            minutes = ("0" + minutes).substr(-2);
+            evt.currentTarget.value = `${hours}:${minutes}`;
+        },
+        initProjectInput(clients) {
+            if (!clients || !clients.length) return;
+            let project_options = [];
+            for (let client of clients) {
+                for (let project of client.children) {
+                    project_options.push({
+                        id: project.id,
+                        name: `${client.text}: ${project.text}`
+                    })
+                }
+            }
+
+            const bloodhound_engine = new Bloodhound({
+                datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                identify: o => o.id,
+                local: project_options
+            });
+
+            const $project_name_input = $('form input[name=project_name]');
+
+            $project_name_input.typeahead(
+                {hint:true, highlight: true, minLength: 1},
+                {name: 'project', display: 'name', source: bloodhound_engine});
+
+            const setSelect = (ev, suggestion) => {
+                this.project = suggestion.id;
+            };
+
+            $project_name_input.bind('typeahead:autocomplete', setSelect);
+            $project_name_input.bind('typeahead:select', setSelect);
+
+            $project_name_input.focus();
+        },
         getEntries(url) {
             let userEntries = timestrapConfig.API_URLS.ENTRIES + '?user=' + timestrapConfig.USER.ID;
             url = (typeof url !== 'undefined') ? url : userEntries;
@@ -264,6 +304,7 @@ export default {
     },
     mounted() {
         this.loadSelect2Options();
+        this.initProjectInput();
         return this.getEntries();
     },
     components: {

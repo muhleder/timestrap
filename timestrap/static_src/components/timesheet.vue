@@ -271,6 +271,9 @@ export default {
                 }
                 this.note = '';
                 this.duration = '';
+                const $project_name_input = $('form input[name=project_name]');
+                $project_name_input.val('').focus();
+
             }).catch(error => console.log(error));
         },
         deleteEntry: function(blockIndex, entryIndex) {

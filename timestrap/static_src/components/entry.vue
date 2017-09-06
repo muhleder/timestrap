@@ -20,7 +20,7 @@
                    type="text"
                    class="form-control form-control-sm text-right font-weight-bold"
                    ref="duration"
-                   v-on:onblur="timeFromInput"
+                   placeholder="0:00"
                    v-model="duration" />
         </div>
         <div class="col-sm-2" v-if="this.$perms.change_entry">
@@ -124,6 +124,7 @@ export default {
         };
     },
     methods: {
+<<<<<<< HEAD
       timeFromInput(evt) {
         let value = evt.currentTarget.value;
         let hours = 0;
@@ -138,6 +139,8 @@ export default {
         minutes = ("0" + minutes).substr(-2);
         evt.currentTarget.value = `${hours}:${minutes}`;
       },
+=======
+>>>>>>> mother/master
         editEntry() {
             this.$quickFetch(timestrapConfig.API_URLS.CLIENTS).then(data => {
                 this.projects = data.map(function(client) {

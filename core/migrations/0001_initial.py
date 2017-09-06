@@ -82,7 +82,6 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=255)),
                 ('archive', models.BooleanField(default=False)),
                 ('estimate', models.DecimalField(blank=True, decimal_places=2, max_digits=10, null=True)),
-                ('hourly_rate', models.DecimalField(blank=True, decimal_places=2, max_digits=10, null=True)),
                 ('client', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='projects', to='core.Client')),
             ],
             options={

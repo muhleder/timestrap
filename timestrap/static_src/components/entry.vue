@@ -124,7 +124,6 @@ export default {
         };
     },
     methods: {
-<<<<<<< HEAD
       timeFromInput(evt) {
         let value = evt.currentTarget.value;
         let hours = 0;
@@ -139,8 +138,6 @@ export default {
         minutes = ("0" + minutes).substr(-2);
         evt.currentTarget.value = `${hours}:${minutes}`;
       },
-=======
->>>>>>> mother/master
         editEntry() {
             this.$quickFetch(timestrapConfig.API_URLS.CLIENTS).then(data => {
                 this.projects = data.map(function(client) {

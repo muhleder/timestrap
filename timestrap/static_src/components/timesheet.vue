@@ -75,7 +75,7 @@
                    type="text"
                    class="form-control form-control-sm text-right font-weight-bold"
                    v-model="duration"
-                   v-on:onblur="timeFromInput"
+                   v-on:blur="timeFromInput"
                    required />
         </div>
         <div class="col-sm-2">

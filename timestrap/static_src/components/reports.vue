@@ -184,7 +184,7 @@ export default {
                 { id: 'desc', text: 'Descending' }
             ],
             orderDir: 'desc',
-            invoiced: 1,
+            is_invoiced: 1,
             invoicedOptions: [
                 { id: 2, text: 'Yes' },
                 { id: 3, text: 'No' }
@@ -248,7 +248,7 @@ export default {
                 min_date: this.dateMin,
                 max_date: this.dateMax,
                 task: this.task,
-                invoiced: this.invoiced
+                is_invoiced: this.is_invoiced
             };
             const url = timestrapConfig.API_URLS.ENTRIES + '?' + $.param(query);
             this.getEntries(url);
@@ -266,7 +266,7 @@ export default {
                 min_date: this.dateMin,
                 max_date: this.dateMax,
                 task: this.task,
-                invoiced: this.invoiced,
+                is_invoiced: this.is_invoiced,
                 exportFormat: this.exportFormat
             };
             document.location.href = timestrapConfig.CORE_URLS.REPORTS_EXPORT + '?' + $.param(query);
@@ -305,7 +305,7 @@ export default {
                     min_date: this.dateMin,
                     max_date: this.dateMax,
                     task: this.task,
-                    invoiced: this.invoiced
+                    is_invoiced: this.is_invoiced
                 };
                 let userEntries = timestrapConfig.API_URLS.ENTRIES + '?' + $.param(query);
 

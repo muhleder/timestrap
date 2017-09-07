@@ -164,11 +164,10 @@ export default {
     },
     methods: {
         timeFromInput(evt) {
-            console.log('hello')
             let value = evt.currentTarget.value;
             let hours = 0;
             let minutes = 0;
-            if (isNaN(parseInt(value))) return;
+            if (parseInt(value) !== parseFloat(value)) return;
             if (value < 10) {
                 hours = value;
             } else {
@@ -176,7 +175,9 @@ export default {
                 hours  = Math.floor(value/60);
             }
             minutes = ("0" + minutes).substr(-2);
-            evt.currentTarget.value = `${hours}:${minutes}`;
+            let new_value = `${hours}:${minutes}`;
+            evt.currentTarget.value = new_value;
+            this.duration = new_value;
         },
         initProjectInput(clients) {
             if (!clients || !clients.length) return;

@@ -128,7 +128,7 @@ export default {
         let value = evt.currentTarget.value;
         let hours = 0;
         let minutes = 0;
-        if (isNaN(parseInt(value))) return;
+        if (isNaN(value)) return;
         if (value < 10) {
           hours = value;
         } else {
